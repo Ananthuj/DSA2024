@@ -1,0 +1,15 @@
+Coding flowchart
+
+> Finding necessary libraries including face recognition
+> Upload employees face images in different angles(front, right side, left side)
+         include corresponding employee name and ID
+> check clarity of images
+> multiple employees at a time
+> face style detection
+> cooling glass detect
+> cap
+> mask
+> male female classification
+> face movement
+> Split datas into train and test data
+> Accuracy checking using algorithms
