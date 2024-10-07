@@ -11,5 +11,6 @@ Coding flowchart
 > mask
 > male female classification
 > face movement
+> EDA
 > Split datas into train and test data
 > Accuracy checking using algorithms
