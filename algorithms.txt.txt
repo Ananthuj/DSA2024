@@ -9,6 +9,7 @@ Coding flowchart
 > cooling glass detect
 > cap
 > mask
+> skin tones
 > male female classification
 > face movement
 > EDA
