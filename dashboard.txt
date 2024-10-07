@@ -1,0 +1,3 @@
+display attendance details based on chosen date
+hr login
+name | id |status |time-in
