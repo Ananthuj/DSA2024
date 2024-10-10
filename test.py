@@ -11,7 +11,7 @@ current_dir = os.getcwd()
 model = tf.keras.models.load_model("model.keras")
 
 # Path to your new image
-image_path = os.path.join(current_dir, "testdata", "user1.jpg")
+image_path = os.path.join(current_dir, ".testdata", "user1.jpg")
 
 # Load and preprocess the image
 img = image.load_img(

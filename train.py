@@ -35,10 +35,11 @@ if not os.path.exists(data_dir):
 # Directory where the dataset is located
 current_dir = os.getcwd()
 data_dir = os.path.join(current_dir, "data", "data")
+
 # Create an ImageDataGenerator instance with rescaling
 datagen = ImageDataGenerator(
-    rescale=1.0 / 255, validation_split=0.2
-)  # 20% for validation
+    rescale=1.0 / 255, validation_split=0.2  # 20% for validation
+)
 
 # Load training data (80%)
 train_generator = datagen.flow_from_directory(
@@ -61,21 +62,20 @@ validation_generator = datagen.flow_from_directory(
 # Define the CNN model
 model = Sequential(
     [
-        Conv2D(
-            32, (3, 3), activation="relu", input_shape=(150, 150, 3)
-        ),  # First Conv Layer
-        MaxPooling2D(pool_size=(2, 2)),  # Pooling Layer
-        Conv2D(64, (3, 3), activation="relu"),  # Second Conv Layer
+        Conv2D(32, (3, 3), activation="relu", input_shape=(150, 150, 3)),
         MaxPooling2D(pool_size=(2, 2)),
-        Conv2D(128, (3, 3), activation="relu"),  # Third Conv Layer
+        Conv2D(64, (3, 3), activation="relu"),
         MaxPooling2D(pool_size=(2, 2)),
-        Flatten(),  # Flatten layer to convert 3D to 1D
-        Dense(128, activation="relu"),  # Fully connected layer
-        Dropout(0.5),  # Dropout to avoid overfitting
-        Dense(5, activation="softmax"),  # Output layer (5 classes)
+        Conv2D(128, (3, 3), activation="relu"),
+        MaxPooling2D(pool_size=(2, 2)),
+        Flatten(),
+        Dense(128, activation="relu"),
+        Dropout(0.5),
+        Dense(5, activation="softmax"),
     ]
 )
 
+# Compile the model
 model.compile(
     loss="categorical_crossentropy",  # Suitable for multi-class classification
     optimizer="adam",  # Adam optimizer
@@ -95,6 +95,7 @@ val_loss, val_acc = model.evaluate(validation_generator)
 print(f"Validation Loss: {val_loss}, Validation Accuracy: {val_acc}")
 
 # Plot training & validation accuracy and loss
+plt.figure(figsize=(10, 5))
 plt.plot(history.history["accuracy"], label="Train Accuracy")
 plt.plot(history.history["val_accuracy"], label="Validation Accuracy")
 plt.title("Model Accuracy")
@@ -103,6 +104,7 @@ plt.xlabel("Epoch")
 plt.legend(loc="upper left")
 plt.show()
 
+plt.figure(figsize=(10, 5))
 plt.plot(history.history["loss"], label="Train Loss")
 plt.plot(history.history["val_loss"], label="Validation Loss")
 plt.title("Model Loss")
@@ -112,4 +114,4 @@ plt.legend(loc="upper left")
 plt.show()
 
 # Save the model
-tf.keras.models.save_model(model, "model.keras")
+model.save("model.keras")
