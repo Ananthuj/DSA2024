@@ -7,13 +7,34 @@ import os
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+import gdown
+import zipfile
+
+# Google Drive file ID and download using gdown
+file_id = "1z1nFcsu_fcq44_qMOkK58qF2U5mPSC7H"
+dataset_path = "dataset.zip"
+
+# Download the dataset only if it doesn't exist
+if not os.path.exists(dataset_path):
+    try:
+        gdown.download(
+            f"https://drive.google.com/uc?id={file_id}", dataset_path, quiet=False
+        )
+    except Exception as e:
+        print("Error downloading the dataset:", e)
+
+# Unzip the dataset if not already extracted
+data_dir = "data"
+if not os.path.exists(data_dir):
+    try:
+        with zipfile.ZipFile(dataset_path, "r") as zip_ref:
+            zip_ref.extractall(data_dir)
+    except Exception as e:
+        print("Error unzipping the dataset:", e)
 
 # Directory where the dataset is located
 current_dir = os.getcwd()
-
-# Define a relative path to the target folder
-data_dir = os.path.join(current_dir, "data")
-
+data_dir = os.path.join(current_dir, "data", "data")
 # Create an ImageDataGenerator instance with rescaling
 datagen = ImageDataGenerator(
     rescale=1.0 / 255, validation_split=0.2
