@@ -12,5 +12,5 @@
 - face match confidence >90% --Log attendance
 - face match confidence <90% --lgnore or flag for review
 - Already marked present today -- ignore
-- Detected at a valid time -- log attendence
+- Detected at a valid time -- log attendence.
 
