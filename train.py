@@ -2,11 +2,17 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+import tensorflow as tf
+import os
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 # Directory where the dataset is located
-data_dir = "C:/Users/ashil/Desktop/Developer/DSA2024/data"
+current_dir = os.getcwd()
+
+# Define a relative path to the target folder
+data_dir = os.path.join(current_dir, "data")
 
 # Create an ImageDataGenerator instance with rescaling
 datagen = ImageDataGenerator(
@@ -31,9 +37,6 @@ validation_generator = datagen.flow_from_directory(
     subset="validation",  # Specify validation subset
 )
 
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
-
 # Define the CNN model
 model = Sequential(
     [
@@ -48,7 +51,7 @@ model = Sequential(
         Flatten(),  # Flatten layer to convert 3D to 1D
         Dense(128, activation="relu"),  # Fully connected layer
         Dropout(0.5),  # Dropout to avoid overfitting
-        Dense(6, activation="softmax"),  # Output layer (6 classes)
+        Dense(5, activation="softmax"),  # Output layer (5 classes)
     ]
 )
 
@@ -65,10 +68,10 @@ history = model.fit(
     epochs=10,  # Number of epochs (can adjust as needed)
     verbose=1,
 )
+
 # Evaluate the model
 val_loss, val_acc = model.evaluate(validation_generator)
 print(f"Validation Loss: {val_loss}, Validation Accuracy: {val_acc}")
-
 
 # Plot training & validation accuracy and loss
 plt.plot(history.history["accuracy"], label="Train Accuracy")
@@ -86,9 +89,6 @@ plt.ylabel("Loss")
 plt.xlabel("Epoch")
 plt.legend(loc="upper left")
 plt.show()
-
-
-import tensorflow as tf
 
 # Save the model
 tf.keras.models.save_model(model, "model.keras")
