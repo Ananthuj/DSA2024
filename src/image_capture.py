@@ -1,31 +1,43 @@
 import cv2
+import os
 
-face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
-capture = cv2.VideoCapture(0)
+def capture_image():
+    cap = cv2.VideoCapture(0)
 
-if not capture.isOpened():
-    print("Error occured : Could not access the webcam.")
-    exit()
+    if not cap.isOpened():
+        print("Error: Could not open the webcam.")
+        return
 
-while True:
-    ret, frame = capture.read()
+    print("Press 's' to save the image and 'q' to quit.")
 
-    if not ret:
-        print("Error occured : Unable to capture image or video.")
-        break
+    while True:
+        ret, frame = cap.read()
 
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        if not ret:
+            print("Error: Failed to capture image.")
+            break
 
-    faces = face_cascade.detectMultiScale(gray,scaleFactor=1.1, minNeighbors=5)
+        cv2.imshow('Webcam - Press s to save, q to quit', frame)
 
-    for(x,y,w,h) in faces:
-        cv2.rectangle(frame, (x,y), (x + w, y + h), (255, 0, 0), 2)
+        key = cv2.waitKey(1) & 0xFF
 
-    cv2.imshow('Face Detection', frame)
+        if key == ord('s'):
+            save_image(frame, 'temp')
+        elif key == ord('q'):
+            break
 
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+    cap.release()
+    cv2.destroyAllWindows()
 
-capture.release()
-cv2.destroyAllWindows()
+
+def save_image(image, path):
+    if not os.path.exists(path):
+        os.makedirs(path)
+
+    save_path = os.path.join(path, 'temp.jpg')
+    cv2.imwrite(save_path, image)
+    print(f"Image saved at: {save_path}")
+
+
+capture_image()
