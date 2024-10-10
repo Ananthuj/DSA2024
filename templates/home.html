@@ -11,8 +11,27 @@
         <a class="active" href="{{ url_for('index') }}">Logout</a>
       </div>
     
-    <div class="container">
-        <h2>welcome ! </h2>
+    <div class="homecontainer">
+        <h2>Attendance Status </h2>
+        <input type="date" id="dt" name="dt"> &nbsp;&nbsp;&nbsp;
+        <button onclick="showTable()">Submit</button>
+        <br>
+        <br>
+        <iframe id="myIframe"></iframe>
+
+        <script>
+         function showTable() {
+            var selectedDate = document.getElementById('dt').value;
+            if (selectedDate) {
+                var iframe = document.getElementById('myIframe');
+                iframe.src = "/attendance?date=" + selectedDate;
+                iframe.style.display = 'block';
+            } 
+            else {
+                    alert("Please select a date.");
+                }
+            }
+        </script>
     </div>
     
 </body>
