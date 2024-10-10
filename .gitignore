@@ -1,2 +1,5 @@
 .venv
-.temp
+.testdata
+data
+dataset.zip
+screenshots UI
