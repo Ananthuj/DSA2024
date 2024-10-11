@@ -14,3 +14,4 @@
 - Already marked present today -- ignore
 - Detected at a valid time -- log attendence.
 
+

@@ -1,16 +1,22 @@
 from tensorflow.keras.preprocessing import image
 import numpy as np
 import matplotlib.pyplot as plt
+import os
+import tensorflow as tf
 
-# load model
-model = keras.models.load_model("model.keras")
+# Directory where the dataset is located
+current_dir = os.getcwd()
+
+# Load the model
+model = tf.keras.models.load_model("model.keras")
+
 # Path to your new image
-image_path = "/content/finger_count_2_48.png"
+image_path = os.path.join(current_dir, ".testdata", "user1.jpg")
 
 # Load and preprocess the image
 img = image.load_img(
     image_path, target_size=(150, 150)
-)  # Resize to match the input shape (150x150)
+)  # Resize to match the input shape
 img_array = image.img_to_array(img)  # Convert image to array
 img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension (1, 150, 150, 3)
 img_array /= 255.0  # Rescale by 1./255 to match training preprocessing
@@ -23,17 +29,17 @@ predicted_class_index = np.argmax(
     predictions[0]
 )  # Index of the highest predicted probability
 
-# Retrieve class labels from the training generator (train_generator.class_indices)
-class_labels = {
-    v: k for k, v in train_generator.class_indices.items()
-}  # Reverse the dictionary to map index to class name
-predicted_class_label = class_labels[predicted_class_index]
+# Manually define class labels (if you have 5 classes, for example)
+class_labels = {0: "user1", 1: "user2", 2: "user3", 3: "user4", 4: "user5"}
+
+# Get the predicted class label
+predicted_class_label = class_labels.get(predicted_class_index, "Unknown")
 
 # Print prediction result
 print(f"Predicted class: {predicted_class_label}")
 
 # Plot the image with the predicted label
-plt.imshow(img)
+plt.imshow(image.load_img(image_path))  # Show the image
 plt.title(f"Predicted: {predicted_class_label}")
 plt.axis("off")
 plt.show()
