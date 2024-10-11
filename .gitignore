@@ -1,1 +1,5 @@
 .venv
+.testdata
+data
+dataset.zip
+temp
