@@ -2,5 +2,5 @@
 .testdata
 data
 dataset.ziptemp
-model.keras
-model.h5
+.model.keras
+.model.h5
