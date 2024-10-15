@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static\style.css">
+    <title>HOME</title>
+</head>
+<body>
+    <div id="navbar">
+        <a class="active" href="{{ url_for('index') }}">Logout</a>
+      </div>
+    
+    <div class="homecontainer">
+        <h2>Attendance Status </h2>
+        <input type="date" id="dt" name="dt"> &nbsp;&nbsp;&nbsp;
+        <button onclick="showTable()">Submit</button>
+        <br>
+        <br>
+        <iframe id="myIframe"></iframe>
+
+        <script>
+         function showTable() {
+            var selectedDate = document.getElementById('dt').value;
+            if (selectedDate) {
+                var iframe = document.getElementById('myIframe');
+                iframe.src = "/attendance?date=" + selectedDate;
+                iframe.style.display = 'block';
+            } 
+            else {
+                    alert("Please select a date.");
+                }
+            }
+        </script>
+    </div>
+    
+</body>
+</html>
