@@ -11,17 +11,9 @@ import gdown
 import zipfile
 
 # Google Drive file ID and download using gdown
-file_id = "1z1nFcsu_fcq44_qMOkK58qF2U5mPSC7H"
-dataset_path = "dataset.zip"
+# file_id = "1z1nFcsu_fcq44_qMOkK58qF2U5mPSC7H"
+dataset_path = "databox.zip"
 
-# Download the dataset only if it doesn't exist
-if not os.path.exists(dataset_path):
-    try:
-        gdown.download(
-            f"https://drive.google.com/uc?id={file_id}", dataset_path, quiet=False
-        )
-    except Exception as e:
-        print("Error downloading the dataset:", e)
 
 # Unzip the dataset if not already extracted
 data_dir = "data"
