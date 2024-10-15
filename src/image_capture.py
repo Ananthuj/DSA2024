@@ -103,7 +103,7 @@ def train_model():
     model = svm.SVC(probability=True)
     model.fit(X, y)
 
-    model_directory = os.path.join(os.path.expanduser("~"), "Desktop", "developer", "model")
+    model_directory = os.path.join(os.path.expanduser("~"), "Desktop", "developer", "DSA2024", "model")
     if not os.path.exists(model_directory):
         os.makedirs(model_directory)
 
@@ -120,14 +120,14 @@ def infer_model(model, input_data):
 
 
 def main():
-    destination_folder = os.path.join(os.path.expanduser("~"), "Desktop", "developer")
+    destination_folder = os.path.join(os.path.expanduser("~"), "Desktop", "developer", "DSA2024")
 
     folder_id = "1z1nFcsu_fcq44_qMOkK58qF2U5mPSC7H"
     download_folder(folder_id, destination_folder)
 
     train_model()
 
-    model_directory = os.path.join(os.path.expanduser("~"), "Desktop", "developer", "model")
+    model_directory = os.path.join(os.path.expanduser("~"), "Desktop", "developer", "DSA2024", "model")
     model_path = os.path.join(model_directory, "face_recognition_model.pkl")
     model = joblib.load(model_path)
 
