@@ -1,8 +1,7 @@
 .venv
 .testdata
 data
-<<<<<<< HEAD
-dataset.ziptemp
-=======
+temp
+databox.zip
+model
 
->>>>>>> abbdb20a4842086950b9205258528345472acfa8
