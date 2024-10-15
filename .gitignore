@@ -1,4 +1,6 @@
 .venv
 .testdata
 data
-dataset.ziptemp
+temp
+databox.zip
+model
