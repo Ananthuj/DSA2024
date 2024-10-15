@@ -8,16 +8,34 @@
 </head>
 <body>
     <div id="navbar">
-        <a class="active" href="{{ url_for('index') }}">Logout</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="hamburger" onclick="toggleSidebar()">&#9776;</span>
       </div>
-    
+      <div id="mySidebar" class="sidebar">
+        <button class="closebtn" onclick="closeSidebar()">&times;</button> 
+        <br>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('index') }}">Logout</a>
+        <a href="{{ url_for('addemp') }}">Add Employee</a>
+    </div>
+
     <div class="homecontainer">
+        <br>
         <h2>Attendance Status </h2>
         <input type="date" id="dt" name="dt"> &nbsp;&nbsp;&nbsp;
         <button onclick="showTable()">Submit</button>
         <br>
         <br>
-        <iframe id="myIframe"></iframe>
+        <div class="attendence_cont">
+            <div class="attendance">
+                
+                <iframe id="myIframe"></iframe>
+            </div>
+            <div class="video-stream">
+                <h2>Live Video Stream</h2>
+                <img src="{{ url_for('video_feed') }}" alt="Live Video Stream">
+            </div>
+        </div>
 
         <script>
          function showTable() {
@@ -30,6 +48,19 @@
             else {
                     alert("Please select a date.");
                 }
+            }
+
+
+            function toggleSidebar() {
+                var sidebar = document.getElementById("mySidebar");
+                if (sidebar.style.display === "block") {
+                    sidebar.style.display = "none";
+                } else {
+                    sidebar.style.display = "block";
+                }
+            }
+            function closeSidebar() {
+                document.getElementById("mySidebar").style.display = "none";
             }
         </script>
     </div>
