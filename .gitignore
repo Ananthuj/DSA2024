@@ -1,5 +1,6 @@
 .venv
 .temp
 .database
+.data
 .model
 .DS_Store
