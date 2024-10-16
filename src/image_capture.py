@@ -1,9 +1,6 @@
-import cv2
-from datetime import datetime
 import os
-import gdown
+import cv2
 import joblib
-from sklearn import svm  # Example model
 import numpy as np
 
 
@@ -73,24 +70,6 @@ def capture_image():
     cap.release()
     cv2.destroyAllWindows()
     return None
-
-
-def train_model():
-    X = [[0], [1], [2], [3]]  # Example features
-    y = [0, 1, 1, 0]  # Example labels
-
-    model = svm.SVC(probability=True)
-    model.fit(X, y)
-
-    model_directory = os.path.join(
-        os.path.expanduser("~"), "Desktop", "developer", "DSA2024", "model"
-    )
-    if not os.path.exists(model_directory):
-        os.makedirs(model_directory)
-
-    model_path = os.path.join(model_directory, "face_recognition_model.pkl")
-    joblib.dump(model, model_path)
-    print(f"Model saved at '{model_path}'.")
 
 
 def infer_model(model, input_data):
