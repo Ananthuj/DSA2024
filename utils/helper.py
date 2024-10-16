@@ -1,4 +1,5 @@
 import os
+import cv2
 import gdown
 from datetime import datetime
 
@@ -25,6 +26,18 @@ def download_folder(folder_id, destination_folder):
         f"https://drive.google.com/uc?id={folder_id}", destination_path, quiet=False
     )
     print(f"Folder downloaded to '{destination_path}'.")
+
+
+def save_image(image, directory="temp", filename="temp.jpg"):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+    filepath = os.path.join(directory, filename)
+
+    cv2.imwrite(filepath, image)
+    print(f"Image saved at '{filepath}'.")
+
+    return filepath
 
 
 def is_valid_timestamp(timestamp_str):

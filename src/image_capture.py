@@ -4,18 +4,6 @@ import joblib
 import numpy as np
 
 
-def save_image(image, directory="temp", filename="temp.jpg"):
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-
-    filepath = os.path.join(directory, filename)
-
-    cv2.imwrite(filepath, image)
-    print(f"Image saved at '{filepath}'.")
-
-    return filepath
-
-
 def capture_image():
     face_cascade = cv2.CascadeClassifier(
         cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
