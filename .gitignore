@@ -1,7 +1,5 @@
 .venv
 .temp
-.testdata
-data
-databox.zip
-model
-
+.database
+.model
+.DS_Store

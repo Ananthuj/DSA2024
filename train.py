@@ -1,14 +1,13 @@
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-import tensorflow as tf
 import os
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
-import gdown
 import zipfile
+import matplotlib.pyplot as plt
+from utils import create_folders
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+dirs = [".temp", ".database", ".model", ".data"]
+create_folders(dirs)
 
 # Google Drive file ID and download using gdown
 # file_id = "1z1nFcsu_fcq44_qMOkK58qF2U5mPSC7H"
