@@ -21,11 +21,8 @@
 
 minimum accurracy to be attained 95% in k fold validation
 
-
 ### turning/ other methods to increase accuracy
 - hyperparameter tunning 
-
-
 
 ### pros
 - misuse of cardcan be reduced
