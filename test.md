@@ -1,4 +1,2 @@
-import time
-time = time
-ts = time.time()
-print(ts)
+# Attendance System Documentation
+
