@@ -1,6 +1,5 @@
 import os
 import cv2
-import numpy as np
 import zipfile
 from mtcnn import MTCNN
 
