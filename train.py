@@ -1,54 +1,31 @@
 import os
-import zipfile
 import matplotlib.pyplot as plt
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
+from tensorflow.keras.layers import Conv2D, MaxPooling2D
+from tensorflow.keras.layers import Flatten, Dense, Dropout
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 
-# Google Drive file ID and download using gdown
-# file_id = "1z1nFcsu_fcq44_qMOkK58qF2U5mPSC7H"
+data_dir = os.path.join(".data", "data")
+datagen = ImageDataGenerator(rescale=1.0 / 255, validation_split=0.2)
 
-dataset_path = "databox.zip"
-
-
-# Unzip the dataset if not already extracted
-data_dir = "data"
-if not os.path.exists(data_dir):
-    try:
-        with zipfile.ZipFile(dataset_path, "r") as zip_ref:
-            zip_ref.extractall(data_dir)
-    except Exception as e:
-        print("Error unzipping the dataset:", e)
-
-# Directory where the dataset is located
-current_dir = os.getcwd()
-data_dir = os.path.join(current_dir, "data", "data")
-
-# Create an ImageDataGenerator instance with rescaling
-datagen = ImageDataGenerator(
-    rescale=1.0 / 255, validation_split=0.2  # 20% for validation
-)
-
-# Load training data (80%)
 train_generator = datagen.flow_from_directory(
     data_dir,
-    target_size=(150, 150),  # Resize images to 150x150
-    batch_size=32,  # Load 32 images per batch
-    class_mode="categorical",  # Multi-class classification
-    subset="training",  # Specify training subset
+    target_size=(150, 150),
+    batch_size=32,
+    class_mode="categorical",
+    subset="training",
 )
 
-# Load validation data (20%)
 validation_generator = datagen.flow_from_directory(
     data_dir,
     target_size=(150, 150),
     batch_size=32,
     class_mode="categorical",
-    subset="validation",  # Specify validation subset
+    subset="validation",
 )
 
-# Define the CNN model
+
 model = Sequential(
     [
         Conv2D(32, (3, 3), activation="relu", input_shape=(150, 150, 3)),
@@ -64,18 +41,18 @@ model = Sequential(
     ]
 )
 
-# Compile the model
+
 model.compile(
-    loss="categorical_crossentropy",  # Suitable for multi-class classification
-    optimizer="adam",  # Adam optimizer
-    metrics=["accuracy"],  # Evaluate using accuracy
+    loss="categorical_crossentropy",
+    optimizer="adam",
+    metrics=["accuracy"],
 )
 
 # Train the model
 history = model.fit(
     train_generator,
-    validation_data=validation_generator,  # Pass validation data directly
-    epochs=10,  # Number of epochs (can adjust as needed)
+    validation_data=validation_generator,
+    epochs=10,
     verbose=1,
 )
 
@@ -103,4 +80,4 @@ plt.legend(loc="upper left")
 plt.show()
 
 # Save the model
-model.save("model.keras")
+model.save(os.path.join(".model", "model.keras"))

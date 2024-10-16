@@ -17,9 +17,9 @@ The Attendance Management System using Web Cam provides an efficient and automat
 
 
 ## Screenshot of current UI
-![Login_page](./screenshots%20UI/login_page.jpg)
-![choose_date](./screenshots%20UI/choose_date.jpg)
-![attendance_table](./screenshots%20UI/attendance%20table.jpg)
+![Login_page](./screenshots/login_page.jpg)
+![choose_date](./screenshots/choose_date.jpg)
+![attendance_table](./screenshots/attendance%20table.jpg)
 
 
 ## Algorithm used
