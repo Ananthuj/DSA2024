@@ -1,7 +1,7 @@
 .venv
 .testdata
 data
-temp
+temp/
 databox.zip
 model
 
