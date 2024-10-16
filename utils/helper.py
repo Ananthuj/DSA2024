@@ -1,5 +1,7 @@
 import os
+import cv2
 import gdown
+import zipfile
 from datetime import datetime
 
 
@@ -25,6 +27,29 @@ def download_folder(folder_id, destination_folder):
         f"https://drive.google.com/uc?id={folder_id}", destination_path, quiet=False
     )
     print(f"Folder downloaded to '{destination_path}'.")
+
+
+def extract_and_delete_zip(zip_path, extract_to=".data"):
+    if os.path.exists(zip_path) and zipfile.is_zipfile(zip_path):
+        with zipfile.ZipFile(zip_path, "r") as zip_ref:
+            zip_ref.extractall(extract_to)
+        print(f"Extracted files to {extract_to}")
+        os.remove(zip_path)
+        print(f"Deleted the zip file: {zip_path}")
+    else:
+        print(f"{zip_path} is not a valid zip file or does not exist.")
+
+
+def save_image(image, directory="temp", filename="temp.jpg"):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+    filepath = os.path.join(directory, filename)
+
+    cv2.imwrite(filepath, image)
+    print(f"Image saved at '{filepath}'.")
+
+    return filepath
 
 
 def is_valid_timestamp(timestamp_str):
