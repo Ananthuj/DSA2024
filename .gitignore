@@ -4,3 +4,4 @@
 .data
 .model
 .DS_Store
+__pycache__
