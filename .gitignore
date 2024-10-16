@@ -1,7 +1,7 @@
 .venv
-.testdata
-data
-temp
-databox.zip
-model
-
+.temp
+.database
+.data
+.model
+.DS_Store
+__pycache__
