@@ -1,7 +1,4 @@
 .venv
 .temp
-.testdata
-data
-databox.zip
-model
-
+.database
+.model
