@@ -63,7 +63,7 @@ def capture_image():
             current_timestamp = get_current_timestamp()
 
             if is_valid_timestamp(current_timestamp):
-                print(f"Face detected! Capturing image with timestamp: {current_timestamp}")
+                print(f"Face detected!! Capturing image with timestamp: {current_timestamp}")
             else:
                 print("Invalid timestamp.")
 
