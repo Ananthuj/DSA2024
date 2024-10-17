@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static\style.css">
+    <title>Employee Registration Form</title>
+    
+    <script>
+        function validateForm() {
+            const fileInput = document.getElementById('photo');
+            const file = fileInput.files[0];
+            const errorElement = document.getElementById('fileError');
+
+            if (file) {
+                const fileSize = file.size / 1024; // size in KB
+                if (fileSize > 500) {
+                    errorElement.textContent = "File size should be less than 500KB.";
+                    return false;
+                } else {
+                    errorElement.textContent = ""; // Clear the error if validation passes
+                }
+            }
+            return true;
+        }
+        function toggleSidebar() {
+                var sidebar = document.getElementById("mySidebar");
+                if (sidebar.style.display === "block") {
+                    sidebar.style.display = "none";
+                } else {
+                    sidebar.style.display = "block";
+                }
+            }
+            function closeSidebar() {
+                document.getElementById("mySidebar").style.display = "none";
+            }
+    </script>
+</head>
+<body>
+    <div id="navbar">
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="hamburger" onclick="toggleSidebar()">&#9776;</span>
+      </div>
+      <div id="mySidebar" class="sidebar">
+        <button class="closebtn" onclick="closeSidebar()">&times;</button> 
+        <br>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('index') }}">Logout</a> 
+      </div>
+      
+    <div class="emp_container">
+        <h2>Employee Registration Form</h2>
+        <form action="/submit_registration" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" name="firstName" required>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" name="lastName" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob" required>
+            </div>
+            <div class="form-group">
+                <label for="position">Position:</label>
+                <input type="text" id="position" name="position" required>
+            </div>
+            <div class="form-group">
+                <label for="department">Department:</label>
+                <input type="text" id="department" name="department" required>
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <textarea id="address" name="address" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="photo">Upload Photo (Max size: 500KB):</label>
+                <input type="file" id="photo" name="photo" accept="image/*" required>
+                <div id="fileError" class="error"></div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Register">
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,4 +1,7 @@
 .venv
-.testdata
-data
-dataset.ziptemp
+.temp
+.database
+.data
+.model
+.DS_Store
+__pycache__
