@@ -7,7 +7,7 @@ import sys
 import time
 from sklearn import svm
 
-sys.path.append(r'Desktop\developer\DSA2024')
+sys.path.append(os.path.abspath(os.path.join(os.path.expanduser("~"), "Desktop", "developer", "DSA2024")))
 
 from utils.helper import is_valid_timestamp, save_image
 
