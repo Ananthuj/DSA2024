@@ -33,9 +33,7 @@ if __name__ == "__main__":
         print(f"Error loading model: {e}")
         exit()
 
-    image_path = os.path.join(
-        ".data", "data", "user1", "WIN_20241010_10_14_55_Pro_face_1.png"
-    )
+    image_path = os.path.join("src", "vision", "temp", "temp.jpg")
 
     try:
         preprocessed_image = load_and_preprocess_image(image_path)

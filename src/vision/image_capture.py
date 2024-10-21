@@ -7,7 +7,11 @@ import sys
 import time
 from sklearn import svm
 
-sys.path.append(os.path.abspath(os.path.join(os.path.expanduser("~"), "Desktop", "developer", "DSA2024")))
+sys.path.append(
+    os.path.abspath(
+        os.path.join(os.path.expanduser("~"), "Desktop", "developer", "DSA2024")
+    )
+)
 
 from utils.helper import is_valid_timestamp, save_image
 
@@ -63,7 +67,9 @@ def capture_image():
             current_timestamp = get_current_timestamp()
 
             if is_valid_timestamp(current_timestamp):
-                print(f"Face detected!! Capturing image with timestamp: {current_timestamp}")
+                print(
+                    f"Face detected!! Capturing image with timestamp: {current_timestamp}"
+                )
             else:
                 print("Invalid timestamp.")
 
@@ -88,7 +94,9 @@ def train_model():
     model = svm.SVC(probability=True)
     model.fit(X, y)
 
-    model_directory = os.path.join(os.path.expanduser("~"), "Desktop", "developer", "DSA2024", "model")
+    model_directory = os.path.join(
+        os.path.expanduser("~"), "Desktop", "developer", "DSA2024", "model"
+    )
     if not os.path.exists(model_directory):
         os.makedirs(model_directory)
 
