@@ -1,7 +1,23 @@
 import os
 import cv2
+from datetime import datetime
 import joblib
 import numpy as np
+import sys
+import time
+from sklearn import svm
+
+sys.path.append(os.path.abspath(os.path.join(os.path.expanduser("~"), "Desktop", "developer", "DSA2024")))
+
+from utils.helper import is_valid_timestamp, save_image
+
+
+def download_folder(folder_id, destination_folder):
+    print(f"Downloading folder with ID: {folder_id} to {destination_folder}...")
+
+
+def get_current_timestamp():
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
 def capture_image():
@@ -15,9 +31,11 @@ def capture_image():
         print("Error: Could not open the webcam.")
         return None
 
-    print("Press 's' to capture the image and 'q' to quit.")
+    print("The camera is detecting faces. Press 'q' to quit.")
 
     original_frame = None
+    face_detected = False
+    face_detection_time = None
 
     while True:
         ret, frame = cap.read()
@@ -35,16 +53,17 @@ def capture_image():
 
         for x, y, w, h in faces:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
+            if not face_detected:
+                face_detected = True
+                face_detection_time = time.time()
 
-        cv2.imshow("Webcam - Press s to capture, q to quit", frame)
+        cv2.imshow("Webcam - Detecting Faces", frame)
 
-        key = cv2.waitKey(1) & 0xFF
-
-        if key == ord("s"):
+        if face_detected and (time.time() - face_detection_time >= 1):
             current_timestamp = get_current_timestamp()
 
-            if check_timestamp(current_timestamp):
-                print(f"Valid timestamp: {current_timestamp}")
+            if is_valid_timestamp(current_timestamp):
+                print(f"Face detected!! Capturing image with timestamp: {current_timestamp}")
             else:
                 print("Invalid timestamp.")
 
@@ -52,7 +71,9 @@ def capture_image():
             cv2.destroyAllWindows()
             return original_frame
 
-        elif key == ord("q"):
+        key = cv2.waitKey(1) & 0xFF
+
+        if key == ord("q"):
             break
 
     cap.release()
@@ -60,8 +81,23 @@ def capture_image():
     return None
 
 
+def train_model():
+    X = [[0], [1], [2], [3]]
+    y = [0, 1, 1, 0]
+
+    model = svm.SVC(probability=True)
+    model.fit(X, y)
+
+    model_directory = os.path.join(os.path.expanduser("~"), "Desktop", "developer", "DSA2024", "model")
+    if not os.path.exists(model_directory):
+        os.makedirs(model_directory)
+
+    model_path = os.path.join(model_directory, "face_recognition_model.pkl")
+    joblib.dump(model, model_path)
+    print(f"Model saved at '{model_path}'.")
+
+
 def infer_model(model, input_data):
-    """Infers the model output and probabilities for the input data."""
     prediction = model.predict(input_data)
     probabilities = model.predict_proba(input_data)
     return prediction, probabilities
@@ -89,6 +125,7 @@ def main():
         save_image(image, directory="temp", filename="temp.jpg")
 
         input_data = np.array([[1]])
+
         prediction, probabilities = infer_model(model, input_data)
 
         print(f"Prediction: {prediction}")
