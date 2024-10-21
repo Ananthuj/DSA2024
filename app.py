@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, session, url_for, redirect, Response
 import cv2
-
+import os
+import time
 app = Flask(__name__)
 
 
@@ -38,23 +39,35 @@ face_cascade = cv2.CascadeClassifier(
 
 
 def generate_frames():
-    # Capture video from the webcam
     cap = cv2.VideoCapture(0)
+    face_detected = False  # Flag to check if a face has been detected
+    # Folder to save captured images
+    capture_folder = os.path.join(os.getcwd(), "captured_images")
+    if not os.path.exists(capture_folder):
+        os.makedirs(capture_folder)
 
     while True:
         success, frame = cap.read()
         if not success:
             break
         else:
-            # Convert the frame to grayscale for face detection
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-            # Detect faces
             faces = face_cascade.detectMultiScale(gray, 1.1, 4)
 
-            # Draw rectangle around the faces
-            for x, y, w, h in faces:
+            # Draw rectangles around detected faces
+            for (x, y, w, h) in faces:
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
+                
+                if not face_detected:  # Capture image only once per detection
+                    # Save the captured image with a timestamp
+                    timestamp = int(time.time())
+                    image_filename = os.path.join(capture_folder, f"captured_{timestamp}.jpg")
+                    cv2.imwrite(image_filename, frame)
+                    print(f"Captured image saved: {image_filename}")
+                    face_detected = True  # Set the flag to true to avoid multiple captures
+
+            if len(faces) == 0:
+                face_detected = False  # Reset the flag if no face is detected
 
             # Encode the frame in JPEG format
             ret, buffer = cv2.imencode(".jpg", frame)
@@ -62,7 +75,6 @@ def generate_frames():
 
             # Yield the frame for streaming
             yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
-
 
 @app.route("/video_feed")
 def video_feed():
@@ -106,6 +118,7 @@ def attendance():
     employees = attendance_data.get(selected_date, [])
 
     return render_template("tbl.html", employees=employees, selected_date=selected_date)
+
 
 
 if __name__ == "__main__":
