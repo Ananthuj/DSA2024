@@ -68,7 +68,7 @@ def capture_image():
                 print("Invalid timestamp.")
 
             cap.release()
-            cv2.destroyAllWindows()
+           #cv2.destroyAllWindows()
             return original_frame
 
         key = cv2.waitKey(1) & 0xFF
@@ -101,6 +101,9 @@ def infer_model(model, input_data):
     prediction = model.predict(input_data)
     probabilities = model.predict_proba(input_data)
     return prediction, probabilities
+
+
+
 
 
 def main():
