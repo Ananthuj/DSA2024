@@ -119,18 +119,17 @@ def main():
     folder_id = "1z1nFcsu_fcq44_qMOkK58qF2U5mPSC7H"
     download_folder(folder_id, destination_folder)
 
-    train_model()
+    # train_model()
 
-    model_directory = os.path.join(
-        os.path.expanduser("~"), "Desktop", "developer", "DSA2024", "model"
-    )
-    model_path = os.path.join(model_directory, "face_recognition_model.pkl")
-    model = joblib.load(model_path)
+    # model_directory = os.path.join(
+    # os.path.expanduser("~"), "Desktop", "developer", "DSA2024", "model")
+    # model_path = os.path.join(model_directory, "face_recognition_model.pkl")
+    # model = joblib.load(model_path)
 
     image = capture_image()
 
     if image is not None:
-        save_image(image, directory="temp", filename="temp.jpg")
+        save_image(image, directory=".temp", filename="temp.jpg")
 
         input_data = np.array([[1]])
 
