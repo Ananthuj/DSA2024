@@ -57,7 +57,6 @@ def create_tables():
             email TEXT,
             phone_number TEXT,
             dob DATE,
-            photo BLOB,
             address TEXT NOT NULL,
             designation TEXT NOT NULL,
             gender TEXT CHECK(gender IN ('Male', 'Female', 'Other')) NOT NULL,
@@ -76,7 +75,6 @@ def create_tables():
             checkout_time TIMESTAMP DEFAULT NULL,
             attendance_date DATE DEFAULT NULL,
             attendance_status TEXT CHECK(attendance_status IN ('Present', 'Absent', 'Leave')) DEFAULT NULL,
-            photo BLOB,
             FOREIGN KEY (employee_id) REFERENCES employees (employee_id)
         );
     ''')
@@ -116,23 +114,11 @@ def insert_department_data():
 
 # ---------------------Insert employee details--------------------------
 def insert_employee_data():
-    """Inserts employee records with photos into the employees' table."""
+    """Inserts employee records into the employees' table."""
     conn = get_connection()
     cursor = conn.cursor()
 
-    # Path to the directory containing photos in user1, user2, etc., folders
-    employees_photo_dir = r'C:\Users\user\Desktop\Developer\DSA2024\src\database\employee_photos\data'
-
-    # Mapping employee IDs to folder names
-    employee_folder_mapping = {
-        'E001': 'user1',
-        'E002': 'user2',
-        'E003': 'user3',
-        'E004': 'user4',
-        'E005': 'user5'
-    }
-
-    # List of employees (adjust according to actual employee data)
+    # List of employees
     employee_data = [
         ('E001', 'Employee 1', 1, 'emp1@example.com', '1234567890', '1990-01-01', 'Address 1', 'Manager', 'Male', '2022-01-01', None),
         ('E002', 'Employee 2', 2, 'emp2@example.com', '2345678901', '1991-02-01', 'Address 2', 'Engineer', 'Female', '2021-05-01', None),
@@ -141,49 +127,21 @@ def insert_employee_data():
         ('E005', 'Employee 5', 5, 'emp5@example.com', '5678901234', '1994-05-01', 'Address 5', 'Consultant', 'Male', '2023-02-20', None)
     ]
 
-    for emp in employee_data:
-        employee_id = emp[0]
-        folder_name = employee_folder_mapping.get(employee_id)
+    try:
+        # Insert employee data into the employees table
+        cursor.executemany('''
+            INSERT INTO employees (employee_id, employee_name, department_id, email, phone_number, dob, address, designation, gender, hire_date, termination_date)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        ''', employee_data)
 
-        # Construct the path to the employee's folder
-        employee_photos_path = os.path.join(employees_photo_dir, folder_name)
+        conn.commit()
+        print("Employee data inserted successfully.")
+    except sqlite3.Error as e:
+        print(f"SQLite error: {e}")
+    finally:
+        cursor.close()
+        conn.close()
 
-        # Check if the directory exists
-        if not os.path.exists(employee_photos_path):
-            print(f"Photo directory for employee {employee_id} (folder: {folder_name}) not found.")
-            continue  # Skip to the next employee if the directory doesn't exist
-
-        # Assuming you want to store the latest photo by date
-        photos = sorted(os.listdir(employee_photos_path))
-        if not photos:
-            print(f"No photos found for employee {employee_id}.")
-            continue  # Skip if no photos are found
-
-        latest_photo = photos[-1]  # Pick the latest photo
-
-        # Convert the latest photo to binary data
-        photo_blob = read_image_as_blob(os.path.join(employee_photos_path, latest_photo))
-
-        # Check if the photo_blob is None
-        if photo_blob is None:
-            print(f"Failed to read photo for {employee_id}, skipping...")
-            continue  # Skip this employee if the photo is not valid
-
-        # Debugging: Print the size of the photo blob
-        print(f"Inserting employee {employee_id}, photo size: {len(photo_blob)} bytes")
-
-        # Insert the employee record along with the photo
-        cursor.execute('''
-            INSERT INTO employees (employee_id, employee_name, department_id, email, phone_number, dob, photo, address, designation, gender, hire_date, termination_date)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (emp[0], emp[1], emp[2], emp[3], emp[4], emp[5], photo_blob, emp[6], emp[7], emp[8], emp[9], emp[10]))
-
-    # Commit the changes
-    conn.commit()
-    cursor.close()
-    conn.close()
-
-    print("Employees with photos have been inserted successfully.")
 
 # ---------------------------Insert attendance data------------------------
 def insert_attendance_data():
@@ -191,17 +149,8 @@ def insert_attendance_data():
     conn = get_connection()
     cursor = conn.cursor()
 
-    # Path to the directory containing photos in user1, user2, etc., folders
-    employees_photo_dir = r'C:\Users\user\Desktop\Developer\DSA2024\src\database\employee_photos\data'
-
-    # Mapping employee IDs to folder names
-    employee_folder_mapping = {
-        'E001': 'user1',
-        'E002': 'user2',
-        'E003': 'user3',
-        'E004': 'user4',
-        'E005': 'user5'
-    }
+    
+    
 
     # Attendance data (adjust according to actual attendance data)
     attendance_data = [
@@ -212,43 +161,7 @@ def insert_attendance_data():
         ('E005', '2024-10-09 08:50:00', '2024-10-09', 'Leave')
     ]
 
-    for record in attendance_data:
-        employee_id = record[0]
-        folder_name = employee_folder_mapping.get(employee_id)
-
-        # Construct the path to the employee's folder
-        employee_photos_path = os.path.join(employees_photo_dir, folder_name)
-
-        # Check if the directory exists
-        if not os.path.exists(employee_photos_path):
-            print(f"Photo directory for employee {employee_id} (folder: {folder_name}) not found.")
-            continue  # Skip to the next record if the directory doesn't exist
-
-        # Assuming you want to store the latest photo by date
-        photos = sorted(os.listdir(employee_photos_path))
-        if not photos:
-            print(f"No photos found for employee {employee_id}.")
-            continue  # Skip if no photos are found
-
-        latest_photo = photos[-1]  # Pick the latest photo
-
-        # Convert the latest photo to binary data
-        photo_blob = read_image_as_blob(os.path.join(employee_photos_path, latest_photo))
-
-        # Check if the photo_blob is None
-        if photo_blob is None:
-            print(f"Failed to read photo for {employee_id}, skipping...")
-            continue  # Skip this record if the photo is not valid
-
-        # Debugging: Print the size of the photo blob
-        print(f"Inserting attendance for {employee_id}, photo size: {len(photo_blob)} bytes")
-
-        # Insert the attendance record along with the photo
-        cursor.execute('''
-            INSERT INTO attendance (employee_id, checkin_time, attendance_date, attendance_status, photo)
-            VALUES (?, ?, ?, ?, ?)
-        ''', (employee_id, record[1], record[2], record[3], photo_blob))
-
+    
     # Commit the changes
     conn.commit()
     cursor.close()
