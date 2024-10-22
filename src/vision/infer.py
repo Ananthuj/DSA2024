@@ -39,8 +39,20 @@ if __name__ == "__main__":
         print(f"Error loading model: {e}")
         exit()
 
-    # Load and preprocess the image (assuming it's in the 'temp' folder in the main directory)
-    image_path = os.path.join(main_dir, "temp", "temp.jpg")
+    # Define the image path
+    # image_path = os.path.join(main_dir, "src", "vision", ".temp", "temp.jpg")
+    image_path = (
+        "C:/Users/ashil/Desktop/Developer/DSA2024/.data/user5/user5_image72.jpg"
+    )
+    # # Capture and save a new image using the webcam
+    # try:
+    #     os.makedirs(os.path.dirname(image_path), exist_ok=True)
+    #     capture_image(image_path)  # Call capture_image to save a new image
+    # except Exception as e:
+    #     print(f"Error capturing image: {e}")
+    #     exit()
+
+    # Load and preprocess the image for inference
     try:
         preprocessed_image = load_and_preprocess_image(image_path)
     except FileNotFoundError as e:
