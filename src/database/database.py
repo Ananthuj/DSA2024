@@ -31,7 +31,15 @@ def create_tables():
     cursor.execute('DROP TABLE IF EXISTS attendance;')
     cursor.execute('DROP TABLE IF EXISTS employees;')
     cursor.execute('DROP TABLE IF EXISTS departments;')
+    cursor.execute('DROP TABLE IF EXISTS login;')
 
+    #create login page
+    cursor.execute('''
+         CREATE TABLE IF NOT EXISTS login (
+         username TEXT PRIMARY KEY,
+         password TEXT NOT NULL
+        )''')
+    
     # Create departments table
     cursor.execute(''' 
         CREATE TABLE departments (
@@ -155,7 +163,7 @@ def insert_employee_data():
 
         # Convert the latest photo to binary data
         photo_blob = read_image_as_blob(os.path.join(employee_photos_path, latest_photo))
-        
+
         # Check if the photo_blob is None
         if photo_blob is None:
             print(f"Failed to read photo for {employee_id}, skipping...")
@@ -226,7 +234,7 @@ def insert_attendance_data():
 
         # Convert the latest photo to binary data
         photo_blob = read_image_as_blob(os.path.join(employee_photos_path, latest_photo))
-        
+
         # Check if the photo_blob is None
         if photo_blob is None:
             print(f"Failed to read photo for {employee_id}, skipping...")
@@ -254,3 +262,4 @@ if __name__ == "__main__":
     insert_department_data()  # Assuming you have this function for department data
     insert_employee_data()
     insert_attendance_data()
+ 
