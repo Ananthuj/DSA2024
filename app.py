@@ -132,7 +132,7 @@ def addusr(max_images=100):
             os.makedirs(folder_name)
         return folder_name
 
-    # Function to capture face images from the webcam and save them
+    # Function to capture face images from the webcam and save them every 2 seconds
     def capture_images(user_id, max_images):
         cap = cv2.VideoCapture(0)
         face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
@@ -168,6 +168,9 @@ def addusr(max_images=100):
             # Display the live webcam feed with the face rectangles
             cv2.imshow(f'Capturing faces for User{user_id}', frame)
 
+            # Sleep for 2 seconds to capture the next image
+            time.sleep(0.25)
+
             # Stop when 'q' is pressed or max_images reached
             if cv2.waitKey(1) & 0xFF == ord('q') or count >= max_images:
                 break
@@ -184,7 +187,7 @@ def addusr(max_images=100):
         print(f"Captured images for User{user_id}. Returning to homepage.")
         
         # Redirect to the homepage
-        return redirect(url_for('home'))  # Assuming you have a 'home' route
+        return redirect(url_for('home')) 
 
 @app.route("/addemp")
 def addemp():
