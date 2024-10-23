@@ -30,8 +30,12 @@ The Attendance Management System using Web Cam provides an efficient and automat
 
 
 ## Result 
-- Accuracy
-- Prediction Time
+
+
+| Model | Accuracy | Prediction Time |
+|-------|----------|-----------------|
+| CNN   | 100%     | - sec           |
+
 
 
 
