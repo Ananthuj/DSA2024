@@ -205,7 +205,7 @@ def home():
 def attendance():
     selected_date = request.args.get("date")
     employees = attendance_data.get(selected_date, [])
-
+ 
     return render_template("tbl.html", employees=employees, selected_date=selected_date)
 
 
