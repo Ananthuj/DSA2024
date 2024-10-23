@@ -1,14 +1,9 @@
 import os
 import numpy as np
 import tensorflow as tf
-<<<<<<< HEAD
-from tensorflow.keras.utils import load_img, img_to_array  # Updated imports
-import time
-=======
 from tensorflow.keras.preprocessing import image
 import cv2
 from mtcnn import MTCNN
->>>>>>> da973b21999ffbc502284c436af1b44b8184f151
 
 
 # Function to detect and return the cropped face part
@@ -19,13 +14,6 @@ def get_face_bounding_part(image_path):
         img = cv2.imread(image_path)
         img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
-<<<<<<< HEAD
-    img = load_img(image_path, target_size=target_size)  # Updated function call
-    img_array = img_to_array(img)  # Updated function call
-    img_array = np.expand_dims(img_array, axis=0)
-    img_array /= 255.0
-    return img_array
-=======
         # Detect faces in the image
         faces = detector.detect_faces(img_rgb)
 
@@ -45,7 +33,6 @@ def get_face_bounding_part(image_path):
     except Exception as e:
         print(f"Error processing {image_path}: {e}")
         return None
->>>>>>> da973b21999ffbc502284c436af1b44b8184f151
 
 
 # Function to load and preprocess the cropped face for model prediction
@@ -62,14 +49,14 @@ def load_and_preprocess_image(cropped_face, target_size=(150, 150)):
         return None
 
 
-# Function to make a model prediction on the preprocessed image
+# Function to make a model prediction on the preprocessed image and print the time taken for the prediction
 def make_model_prediction(model, preprocessed_image, class_labels):
-    start_time = time.time()  # Start time before prediction
+    start_time = time.time()
     predictions = model.predict(preprocessed_image)
-    end_time = time.time()  # End time after prediction
+    end_time = time.time()
 
-    prediction_time = end_time - start_time  # Calculate time difference
-    print(f"Prediction time: {prediction_time:.4f} seconds")  # Print prediction time
+    prediction_time = end_time - start_time
+    print(f"Prediction time: {prediction_time:.4f} seconds")
 
     predicted_class_index = np.argmax(predictions[0])
     predicted_class_label = class_labels.get(predicted_class_index, "Unknown")
@@ -87,11 +74,7 @@ if __name__ == "__main__":
         exit()
 
     try:
-<<<<<<< HEAD
-        model = tf.keras.models.load_model(os.path.join(".model", "model.keras"))
-=======
         model = tf.keras.models.load_model(model_path)
->>>>>>> da973b21999ffbc502284c436af1b44b8184f151
         print("Model loaded successfully.")
     except OSError as e:
         print(f"Error loading model: {e}")
