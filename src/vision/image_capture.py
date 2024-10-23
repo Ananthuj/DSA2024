@@ -14,8 +14,6 @@ from utils.helper import is_valid_timestamp, save_image
 
 def download_folder(folder_id, destination_folder):
     print(f"Downloading folder with ID: {folder_id} to {destination_folder}...")
-
-
 def get_current_timestamp():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
