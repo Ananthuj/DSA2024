@@ -4,6 +4,7 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing import image
 import cv2
 from mtcnn import MTCNN
+import time
 
 
 # Function to detect and return the cropped face part
@@ -81,7 +82,7 @@ if __name__ == "__main__":
         exit()
 
     # Define the image path
-    image_path = os.path.join(main_dir, "src", "vision", ".temp", "temp.jpg")
+    image_path = os.path.join(main_dir, "captured_images", "captured_1729677895")
 
     # Step 1: Detect and extract face bounding part
     cropped_face = get_face_bounding_part(image_path)
