@@ -2,6 +2,15 @@ import cv2
 import os
 
 
+<<<<<<< HEAD
+def download_folder(folder_id, destination_folder):
+    print(f"Downloading folder with ID: {folder_id} to {destination_folder}...")
+def get_current_timestamp():
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+
+def capture_image():
+=======
 def capture_image(output_path):
     # Initialize the camera
     cap = cv2.VideoCapture(0)
@@ -10,6 +19,7 @@ def capture_image(output_path):
         raise IOError("Cannot open webcam")
 
     # Load the pre-trained Haar cascade classifier for face detection
+>>>>>>> c420ce0aa4c33b3b55da198bd9026c02227635bc
     face_cascade = cv2.CascadeClassifier(
         cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
     )
