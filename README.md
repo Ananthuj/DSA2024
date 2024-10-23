@@ -31,7 +31,7 @@ The Attendance Management System using Web Cam provides an efficient and automat
 
 ## Model Architecture Trained
 
-![Model Achitecture](./Downloads/model_architecture.png)
+![Model Achitecture](./screenshots/model_architecture.png)
 
 ## Result 
 
