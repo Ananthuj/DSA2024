@@ -1,21 +1,68 @@
 import os
 import numpy as np
 import tensorflow as tf
+<<<<<<< HEAD
 from tensorflow.keras.utils import load_img, img_to_array  # Updated imports
 import time
+=======
+from tensorflow.keras.preprocessing import image
+import cv2
+from mtcnn import MTCNN
+>>>>>>> da973b21999ffbc502284c436af1b44b8184f151
 
 
-def load_and_preprocess_image(image_path, target_size=(150, 150)):
-    if not os.path.exists(image_path):
-        raise FileNotFoundError(f"Image file not found at {image_path}")
+# Function to detect and return the cropped face part
+def get_face_bounding_part(image_path):
+    detector = MTCNN()
+    try:
+        # Load the image
+        img = cv2.imread(image_path)
+        img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
+<<<<<<< HEAD
     img = load_img(image_path, target_size=target_size)  # Updated function call
     img_array = img_to_array(img)  # Updated function call
     img_array = np.expand_dims(img_array, axis=0)
     img_array /= 255.0
     return img_array
+=======
+        # Detect faces in the image
+        faces = detector.detect_faces(img_rgb)
+
+        if len(faces) == 0:
+            print("No faces detected in the image.")
+            return None
+
+        # Process the first detected face (modify if you want to handle multiple faces)
+        face = faces[0]  # Only taking the first face
+        x, y, width, height = face["box"]
+
+        # Crop the image to the bounding box
+        cropped_img = img_rgb[y : y + height, x : x + width]
+
+        return cropped_img
+
+    except Exception as e:
+        print(f"Error processing {image_path}: {e}")
+        return None
+>>>>>>> da973b21999ffbc502284c436af1b44b8184f151
 
 
+# Function to load and preprocess the cropped face for model prediction
+def load_and_preprocess_image(cropped_face, target_size=(150, 150)):
+    try:
+        img_resized = cv2.resize(cropped_face, target_size)
+        img_array = np.expand_dims(img_resized, axis=0)
+        img_array = (
+            img_array.astype("float32") / 255.0
+        )  # Normalize pixel values to [0, 1]
+        return img_array
+    except Exception as e:
+        print(f"Error in preprocessing image: {e}")
+        return None
+
+
+# Function to make a model prediction on the preprocessed image
 def make_model_prediction(model, preprocessed_image, class_labels):
     start_time = time.time()  # Start time before prediction
     predictions = model.predict(preprocessed_image)
@@ -30,28 +77,45 @@ def make_model_prediction(model, preprocessed_image, class_labels):
 
 
 if __name__ == "__main__":
-    current_dir = os.getcwd()
+    # Get the path to the main directory (one level up from 'src')
+    main_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
+    # Load the model from the main directory
+    model_path = os.path.join(main_dir, ".model", "model.keras")
+    if not os.path.exists(model_path):
+        print(f"Model file not found at {model_path}")
+        exit()
 
     try:
+<<<<<<< HEAD
         model = tf.keras.models.load_model(os.path.join(".model", "model.keras"))
+=======
+        model = tf.keras.models.load_model(model_path)
+>>>>>>> da973b21999ffbc502284c436af1b44b8184f151
         print("Model loaded successfully.")
     except OSError as e:
         print(f"Error loading model: {e}")
         exit()
 
-    image_path = os.path.join(
-        ".data", "data", "user1", "WIN_20241010_10_14_55_Pro_face_1.png"
-    )
+    # Define the image path
+    image_path = os.path.join(main_dir, "src", "vision", ".temp", "temp.jpg")
 
-    try:
-        preprocessed_image = load_and_preprocess_image(image_path)
-    except FileNotFoundError as e:
-        print(e)
+    # Step 1: Detect and extract face bounding part
+    cropped_face = get_face_bounding_part(image_path)
+    if cropped_face is None:
+        print("Face not found, unable to proceed with prediction.")
+        exit()
+
+    # Step 2: Preprocess the cropped face for model inference
+    preprocessed_image = load_and_preprocess_image(cropped_face)
+    if preprocessed_image is None:
+        print("Error in preprocessing image, exiting.")
         exit()
 
     # Define class labels (modify as needed for your dataset)
     class_labels = {0: "user1", 1: "user2", 2: "user3", 3: "user4", 4: "user5"}
 
+    # Step 3: Make prediction
     predicted_class_label = make_model_prediction(
         model, preprocessed_image, class_labels
     )
