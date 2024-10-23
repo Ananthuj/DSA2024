@@ -29,5 +29,9 @@ The Attendance Management System using Web Cam provides an efficient and automat
     -  A Convolutional Neural Network (CNN) is a type of deep learning algorithm that is particularly effective for tasks involving image and video data. CNNs are widely used in computer vision applications, such as image classification, object detection, and facial recognition, as well as in other fields like medical imaging and natural language processing.
 
 
+## Result 
+- Accuracy
+- Prediction Time
+
 
 
