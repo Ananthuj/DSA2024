@@ -49,9 +49,15 @@ def load_and_preprocess_image(cropped_face, target_size=(150, 150)):
         return None
 
 
-# Function to make a model prediction on the preprocessed image
+# Function to make a model prediction on the preprocessed image and print the time taken for the prediction
 def make_model_prediction(model, preprocessed_image, class_labels):
+    start_time = time.time()
     predictions = model.predict(preprocessed_image)
+    end_time = time.time()
+
+    prediction_time = end_time - start_time
+    print(f"Prediction time: {prediction_time:.4f} seconds")
+
     predicted_class_index = np.argmax(predictions[0])
     predicted_class_label = class_labels.get(predicted_class_index, "Unknown")
     return predicted_class_label
