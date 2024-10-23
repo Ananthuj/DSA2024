@@ -7,7 +7,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 
 # Function to load and preprocess the data
-def load_data(data_dir, target_size=(150, 150), batch_size=32, validation_split=0.2):
+def load_data(data_dir, target_size=(150, 150), batch_size=32, validation_split=0.03):
     """Load and preprocess the data for training and validation."""
     datagen = ImageDataGenerator(rescale=1.0 / 255, validation_split=validation_split)
 
@@ -30,9 +30,9 @@ def load_data(data_dir, target_size=(150, 150), batch_size=32, validation_split=
     return train_generator, validation_generator
 
 
-# Function to create the CNN model
-def create_model(input_shape=(150, 150, 3), num_classes=5):
-    """Create a Sequential CNN model."""
+# Function to create an enhanced CNN model with more layers
+def create_model(input_shape=(150, 150, 3), num_classes=7):
+    """Create a Sequential CNN model with extra layers."""
     model = Sequential(
         [
             Conv2D(32, (3, 3), activation="relu", input_shape=input_shape),
@@ -41,9 +41,15 @@ def create_model(input_shape=(150, 150, 3), num_classes=5):
             MaxPooling2D(pool_size=(2, 2)),
             Conv2D(128, (3, 3), activation="relu"),
             MaxPooling2D(pool_size=(2, 2)),
+            # Additional convolutional layers
+            Conv2D(256, (3, 3), activation="relu"),
+            MaxPooling2D(pool_size=(2, 2)),
+            Conv2D(512, (3, 3), activation="relu"),
+            MaxPooling2D(pool_size=(2, 2)),
             Flatten(),
-            Dense(128, activation="relu"),
+            Dense(512, activation="relu"),
             Dropout(0.5),
+            # Output layer for classification
             Dense(num_classes, activation="softmax"),
         ]
     )
@@ -58,7 +64,7 @@ def create_model(input_shape=(150, 150, 3), num_classes=5):
 
 
 # Function to train the model
-def train_model(model, train_generator, validation_generator, epochs=10):
+def train_model(model, train_generator, validation_generator, epochs=30):
     """Train the model and return the training history."""
     history = model.fit(
         train_generator,
@@ -111,13 +117,16 @@ def save_model(model, save_dir=".model", model_name="model.keras"):
 
 # Main function to bring it all together
 def main():
-    data_dir = os.path.join(".data", "data")
+    data_dir = os.path.join(".data")
 
     # Load the data
     train_generator, validation_generator = load_data(data_dir)
 
-    # Create the model
-    model = create_model()
+    # Get the number of classes dynamically
+    num_classes = train_generator.num_classes
+
+    # Create the model with extra layers
+    model = create_model(num_classes=num_classes)
 
     # Train the model
     history = train_model(model, train_generator, validation_generator)
