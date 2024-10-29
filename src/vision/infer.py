@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import tensorflow as tf
+import time
 from tensorflow.keras.preprocessing import image
 import cv2
 from mtcnn import MTCNN
@@ -86,8 +87,8 @@ if __name__ == "__main__":
         print(f"Error loading model: {e}")
         exit()
 
-    # Define the image path
-    image_path = os.path.join(main_dir, "captured_images", "captured_1729677895")
+    # Define the correct image path
+    image_path = os.path.join(main_dir, "src", "vision", ".temp", "temp.jpg")
 
     # Step 1: Detect and extract face bounding part
     cropped_face = get_face_bounding_part(image_path)
