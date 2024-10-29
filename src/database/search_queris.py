@@ -41,6 +41,16 @@ def get_attendance_by_date(attendance_date):
     query = f"SELECT * FROM attendance WHERE attendance_date = '{attendance_date}';"
     return execute_query(query)
 
+# 6a. Get employees present on a specific date with details
+def get_employees_present_on_date_with_details(attendance_date):
+    query = f"""
+    SELECT e.employee_id, e.employee_name, a.attendance_status, a.checkin_time
+    FROM employees e
+    JOIN attendance a ON e.employee_id = a.employee_id
+    WHERE a.attendance_status = 'Present' AND a.attendance_date = '{attendance_date}';
+    """
+    return execute_query(query)
+
 # 7. Count employees per department
 def count_employees_per_department():
     query = "SELECT department_id, COUNT(*) as employee_count FROM employees GROUP BY department_id;"
@@ -123,6 +133,11 @@ if __name__ == "__main__":
     attendance_on_date = get_attendance_by_date('2024-10-09')
     for record in attendance_on_date:
         print(record)
+
+    # Example 6a: Get employees present on a specific date with details
+    employees_present_on_date = get_employees_present_on_date_with_details('2024-10-09')
+    for emp in employees_present_on_date:
+        print(emp)
 
     # Example 7: Count employees per department
     employee_count_per_dept = count_employees_per_department()

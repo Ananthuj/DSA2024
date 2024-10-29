@@ -11,16 +11,6 @@ def close_connection(connection):
     if connection:
         connection.close()
 
-#----------------------read image as BLOB-------------------------------
-def read_image_as_blob(image_path):
-    """Reads an image from the given path and returns it as binary data (BLOB)."""
-    try:
-        with open(image_path, 'rb') as file:
-            return file.read()
-    except Exception as e:
-        print(f"Error reading image {image_path}: {e}")
-        return None
-
 # ----------------------------Create tables------------------------------
 def create_tables():
     """Creates the departments, employees, and attendance tables in the SQLite database."""
@@ -33,14 +23,13 @@ def create_tables():
     cursor.execute('DROP TABLE IF EXISTS departments;')
     cursor.execute('DROP TABLE IF EXISTS login;')
 
-    #create login page
+    # Create tables
     cursor.execute('''
-         CREATE TABLE IF NOT EXISTS login (
-         username TEXT PRIMARY KEY,
-         password TEXT NOT NULL
+        CREATE TABLE IF NOT EXISTS login (
+            username TEXT PRIMARY KEY,
+            password TEXT NOT NULL
         )''')
     
-    # Create departments table
     cursor.execute(''' 
         CREATE TABLE departments (
             department_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -48,7 +37,6 @@ def create_tables():
         );
     ''')
 
-    # Create employees table
     cursor.execute(''' 
         CREATE TABLE employees (
             employee_id TEXT PRIMARY KEY,
@@ -66,7 +54,6 @@ def create_tables():
         ); 
     ''')
 
-    # Create attendance table
     cursor.execute(''' 
         CREATE TABLE attendance (
             attendance_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -90,20 +77,11 @@ def insert_department_data():
     cursor = connection.cursor()
 
     try:
-        # Insert department data
         cursor.executemany(''' 
             INSERT INTO departments (department_name) VALUES (?);
         ''', [
-            ('HR',),
-            ('Finance',),
-            ('IT',),
-            ('Marketing',),
-            ('Sales',),
-            ('Support',),
-            ('Development',),
-            ('Research',),
-            ('Administration',),
-            ('Logistics',)
+            ('HR',), ('Finance',), ('IT',), ('Marketing',), ('Sales',),
+            ('Support',), ('Development',), ('Research',), ('Administration',), ('Logistics',)
         ])
         connection.commit()
         print("Department data inserted successfully.")
@@ -118,7 +96,6 @@ def insert_employee_data():
     conn = get_connection()
     cursor = conn.cursor()
 
-    # List of employees
     employee_data = [
         ('E001', 'Employee 1', 1, 'emp1@example.com', '1234567890', '1990-01-01', 'Address 1', 'Manager', 'Male', '2022-01-01', None),
         ('E002', 'Employee 2', 2, 'emp2@example.com', '2345678901', '1991-02-01', 'Address 2', 'Engineer', 'Female', '2021-05-01', None),
@@ -128,12 +105,10 @@ def insert_employee_data():
     ]
 
     try:
-        # Insert employee data into the employees table
         cursor.executemany('''
             INSERT INTO employees (employee_id, employee_name, department_id, email, phone_number, dob, address, designation, gender, hire_date, termination_date)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
         ''', employee_data)
-
         conn.commit()
         print("Employee data inserted successfully.")
     except sqlite3.Error as e:
@@ -142,37 +117,36 @@ def insert_employee_data():
         cursor.close()
         conn.close()
 
-
 # ---------------------------Insert attendance data------------------------
 def insert_attendance_data():
-    """Inserts attendance records with photos into the attendance table."""
+    """Inserts attendance records into the attendance table."""
     conn = get_connection()
     cursor = conn.cursor()
 
-    
-    
-
-    # Attendance data (adjust according to actual attendance data)
     attendance_data = [
-        ('E001', '2024-10-09 08:30:00', '2024-10-09', 'Present'),
-        ('E002', '2024-10-09 08:35:00', '2024-10-09', 'Present'),
-        ('E003', '2024-10-09 08:40:00', '2024-10-09', 'Absent'),
-        ('E004', '2024-10-09 08:45:00', '2024-10-09', 'Present'),
-        ('E005', '2024-10-09 08:50:00', '2024-10-09', 'Leave')
+        ('E001', '2024-10-09 08:30:00', None, '2024-10-09', 'Present'),
+        ('E002', '2024-10-09 08:35:00', None, '2024-10-09', 'Present'),
+        ('E003', '2024-10-09 08:40:00', None, '2024-10-09', 'Absent'),
+        ('E004', '2024-10-09 08:45:00', None, '2024-10-09', 'Present'),
+        ('E005', '2024-10-09 08:50:00', None, '2024-10-09', 'Leave')
     ]
 
-    
-    # Commit the changes
-    conn.commit()
-    cursor.close()
-    conn.close()
-
-    print("Attendance data with photos has been inserted successfully.")
+    try:
+        cursor.executemany('''
+            INSERT INTO attendance (employee_id, checkin_time, checkout_time, attendance_date, attendance_status)
+            VALUES (?, ?, ?, ?, ?);
+        ''', attendance_data)
+        conn.commit()
+        print("Attendance data inserted successfully.")
+    except sqlite3.Error as e:
+        print(f"SQLite error: {e}")
+    finally:
+        cursor.close()
+        conn.close()
 
 # ----------------------------Main program-----------------------------
 if __name__ == "__main__":
-    create_tables()  # Assuming you have this function for creating necessary tables
-    insert_department_data()  # Assuming you have this function for department data
+    create_tables()  
+    insert_department_data()  
     insert_employee_data()
     insert_attendance_data()
- 
