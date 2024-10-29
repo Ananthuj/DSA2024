@@ -4,6 +4,7 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing import image
 import cv2
 from mtcnn import MTCNN
+import matplotlib.pyplot as plt
 
 
 # Function to detect and return the cropped face part
@@ -27,6 +28,11 @@ def get_face_bounding_part(image_path):
 
         # Crop the image to the bounding box
         cropped_img = img_rgb[y : y + height, x : x + width]
+
+        # Display the cropped face image
+        plt.imshow(cropped_img)
+        plt.axis("off")
+        plt.show()
 
         return cropped_img
 
@@ -90,7 +96,14 @@ if __name__ == "__main__":
         exit()
 
     # Define class labels (modify as needed for your dataset)
-    class_labels = {0: "user1", 1: "user2", 2: "user3", 3: "user4", 4: "user5"}
+    class_labels = {
+        0: "user1",
+        1: "user2",
+        2: "user3",
+        3: "user4",
+        4: "user5",
+        5: "user6",
+    }
 
     # Step 3: Make prediction
     predicted_class_label = make_model_prediction(
