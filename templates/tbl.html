@@ -35,10 +35,10 @@
             <td>{{ employee.status }}</td>
             <td>{{ employee.in_time }}</td> 
         </tr>
-        {% endfor %}
+    {% endfor %}
     </table>
     {% else %}
-    <p>No attendance data available for the selected date.</p>
+    <p>No attendance data available for the selected date {{selected_date}}.</p>
     {% endif %}
 </body>
 </html>
